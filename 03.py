@@ -16,13 +16,14 @@ def recursive_find_best(overall_str, desired_len):
 
     options = []
     for i, c in enumerate(overall_str):
-        if overall_str[i+1:] in memo and desired_len in memo[overall_str[i+1:]]:
-            next = memo[overall_str[i+1:]][desired_len]
+        remaining_str = overall_str[i+1:]
+        if remaining_str in memo and desired_len in memo[remaining_str]:
+            next = memo[remaining_str][desired_len]
         else:
-            if not overall_str[i+1:] in memo:
-                memo[overall_str[i+1:]] = {}
-            next = recursive_find_best(overall_str[i+1:], desired_len - 1)
-            memo[overall_str[i+1:]][desired_len] = next
+            if not remaining_str in memo:
+                memo[remaining_str] = {}
+            next = recursive_find_best(remaining_str, desired_len - 1)
+            memo[remaining_str][desired_len] = next
         if next == -1:
             continue
         options.append(int(f'{c}{next}'))
