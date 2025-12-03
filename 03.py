@@ -21,3 +21,37 @@ for line in lines:
 
 print(output_joltages)
 print(sum(output_joltages))
+
+memo = {}
+
+def recursive_find_best(overall_str, desired_len):
+    #base case: string is as long as desired
+    if len(overall_str) == 0:
+        return -1
+    if desired_len == 1:
+        return max([int(x) for x in overall_str])
+
+    options = []
+    for i, c in enumerate(overall_str):
+        if overall_str[i+1:] in memo and desired_len in memo[overall_str[i+1:]]:
+            next = memo[overall_str[i+1:]][desired_len]
+        else:
+            if not overall_str[i+1:] in memo:
+                memo[overall_str[i+1:]] = {}
+            next = recursive_find_best(overall_str[i+1:], desired_len - 1)
+            memo[overall_str[i+1:]][desired_len] = next
+        if next == -1:
+            continue
+        options.append(int(f'{c}{next}'))
+    
+    if len(options) == 0:
+        return -1
+
+    return max(options)
+
+pt2_total = 0
+for line in lines:
+    memo = {}
+    pt2_total += recursive_find_best(line, 12)
+
+print(pt2_total)
