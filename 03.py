@@ -5,23 +5,6 @@
 with open("inputs/03.txt") as f:
     lines = [x.strip() for x in f.readlines()]
 
-output_joltages = []
-for line in lines:
-    bank = [int(x) for x in line] 
-    #get the max and its index
-    bank_max = max(bank)
-    bank_max_idx = bank.index(bank_max)
-
-    if bank_max_idx == len(bank) - 1:
-        first_digit = max(bank[:-1])
-        output_joltages.append((first_digit * 10) + bank_max)
-    else:
-        second_digit = max(bank[bank_max_idx+1:])
-        output_joltages.append((bank_max * 10) + second_digit)
-
-print(output_joltages)
-print(sum(output_joltages))
-
 memo = {}
 
 def recursive_find_best(overall_str, desired_len):
@@ -49,9 +32,13 @@ def recursive_find_best(overall_str, desired_len):
 
     return max(options)
 
+pt1_total = 0
 pt2_total = 0
 for line in lines:
     memo = {}
+    pt1_total += recursive_find_best(line, 2)
+    memo = {}
     pt2_total += recursive_find_best(line, 12)
 
+print(pt1_total)
 print(pt2_total)
