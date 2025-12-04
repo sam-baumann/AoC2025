@@ -17,7 +17,7 @@ class GridTools:
                 gridLines = file.readlines()
         if grid is not None:
             self.grid = grid
-        else: 
+        elif gridLines is not None: 
             self.grid = [list(x.strip()) for x in gridLines]
 
     def rows(self):
