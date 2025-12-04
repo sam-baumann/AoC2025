@@ -1,4 +1,6 @@
 from GridTools import GridTools
+from PIL import Image
+import numpy as np
 
 grid = GridTools("./inputs/04.txt")
 
@@ -38,7 +40,7 @@ print(total_rolls)
 
 pt2_total_rolls = 0
 moved_rolls = 1
-import time
+image_arr = []
 while moved_rolls > 0:
     moved_rolls = 0
     for i in range(grid.rows()):
@@ -50,8 +52,7 @@ while moved_rolls > 0:
                     moved_rolls += 1
                     grid.grid[i][j] = 'x'
     
-    #creates kind of a cool animation in the terminal
-    grid.printGrid()
+    image_arr.append(Image.fromarray(np.array([[255 if x != '.' else 0 for x in row] for row in grid.grid], dtype=np.uint8), 'L'))
 
     for i in range(grid.rows()):
         for j in range(grid.cols()):
@@ -60,3 +61,4 @@ while moved_rolls > 0:
 
 print(total_rolls)
 print(pt2_total_rolls)
+image_arr[0].save('04.gif', save_all=True, append_images= image_arr[1:], duration=100, loop=0)
