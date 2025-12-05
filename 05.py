@@ -1,12 +1,12 @@
 with open("./inputs/05.txt") as f:
     lines = [x.strip() for x in f.readlines()]
 
-ranges = [] #list of tuples
-ids = [] #list of numbers
+ranges = []  # list of tuples
+ids = []  # list of numbers
 
 i = 0
 while len(lines[i]):
-    ranges.append(tuple(int(x) for x in lines[i].split('-')))
+    ranges.append(tuple(int(x) for x in lines[i].split("-")))
     i += 1
 
 i += 1
@@ -15,7 +15,7 @@ valid_nums = 0
 while i < len(lines):
     num = int(lines[i])
 
-    #check if num valid
+    # check if num valid
     is_valid = False
     for range in ranges:
         if num >= range[0] and num <= range[1]:
@@ -24,15 +24,15 @@ while i < len(lines):
 
     if is_valid:
         valid_nums += 1
-    
-    i+= 1
+
+    i += 1
 
 print(valid_nums)
 
-ranges = sorted(ranges, key = lambda x: x[0]) #sort by low end
+ranges = sorted(ranges, key=lambda x: x[0])  # sort by low end
 new_ranges = []
 
-#now, we can iterate over the ranges, merging them if the low end of the next range is lower than the high end of the current range
+# now, we can iterate over the ranges, merging them if the low end of the next range is lower than the high end of the current range
 i = 0
 while i < len(ranges):
     low, high = ranges[i]

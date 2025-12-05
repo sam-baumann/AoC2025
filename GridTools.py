@@ -17,7 +17,7 @@ class GridTools:
                 gridLines = file.readlines()
         if grid is not None:
             self.grid = grid
-        elif gridLines is not None: 
+        elif gridLines is not None:
             self.grid = [list(x.strip()) for x in gridLines]
 
     def rows(self):
@@ -25,6 +25,7 @@ class GridTools:
         this refers to the 'x' dimension
         """
         return len(self.grid)
+
     def cols(self):
         """
         this refers to the 'y' dimension
@@ -32,7 +33,7 @@ class GridTools:
         return len(self.grid[0])
 
     def isInBounds(self, x, y):
-        if (x >= self.rows() or x < 0 or y >= self.cols() or y < 0):
+        if x >= self.rows() or x < 0 or y >= self.cols() or y < 0:
             return False
         return True
 
@@ -51,22 +52,21 @@ class GridTools:
             return None
         else:
             return self.grid[x][y]
-            
+
     def printGrid(self):
         print(str(self))
 
     def __repr__(self):
-        ret = ''
-        ret += ('*' * self.cols())
-        ret += '\n'
+        ret = ""
+        ret += "*" * self.cols()
+        ret += "\n"
         for row in self.grid:
-            ret += (''.join([str(x) for x in row])) 
-            ret += '\n'
-        ret += ('*' * self.cols())
+            ret += "".join([str(x) for x in row])
+            ret += "\n"
+        ret += "*" * self.cols()
         return ret
-
 
     def addVector(self, first, second):
         if len(first) != len(second):
             return None
-        return tuple([x+y for x, y in zip(first, second)])
+        return tuple([x + y for x, y in zip(first, second)])

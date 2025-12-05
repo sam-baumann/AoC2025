@@ -1,4 +1,4 @@
-#read input
+# read input
 with open("inputs/01.txt") as f:
     lines = [x.strip() for x in f.readlines()]
 
@@ -10,7 +10,7 @@ for line in lines:
     dir = line[0]
     number = int(line[1:])
 
-    mod = -1 if dir == 'L' else 1
+    mod = -1 if dir == "L" else 1
 
     pt2_dial = dial
     dial += number * mod
