@@ -52,7 +52,7 @@ while moved_rolls > 0:
                 if res < 4:
                     pt2_total_rolls += 1
                     moved_rolls += 1
-                    grid.grid[i][j] = "x"
+                    grid.grid[i][j] = "."
 
     image_arr.append(
         Image.fromarray(
@@ -63,11 +63,6 @@ while moved_rolls > 0:
             "L",
         )
     )
-
-    for i in range(grid.rows()):
-        for j in range(grid.cols()):
-            if grid.grid[i][j] == "x":
-                grid.grid[i][j] = "."
 
 print(total_rolls)
 print(pt2_total_rolls)
