@@ -44,6 +44,6 @@ while i < len(ranges):
 
 total = 0
 for range in new_ranges:
-    total += range[1] - range[0] + 1
+    total += range[1] - range[0] + 1 # include +1 to account for the range being inclusive
 
 print(total)
