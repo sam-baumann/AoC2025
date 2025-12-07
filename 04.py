@@ -66,6 +66,14 @@ while moved_rolls > 0:
 
 print(total_rolls)
 print(pt2_total_rolls)
+image_multiplier = 5
+image_arr = [
+    x.resize(
+        (x.width * image_multiplier, x.height * image_multiplier),
+        Image.Resampling.NEAREST,
+    )
+    for x in image_arr
+]
 image_arr[0].save(
     "04.gif", save_all=True, append_images=image_arr[1:], duration=100, loop=0
 )
