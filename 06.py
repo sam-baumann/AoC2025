@@ -5,11 +5,12 @@ with open("./inputs/06.txt") as f:
 
 pt1_lines = [x.strip().split() for x in lines]
 
-#convert all but last to numbers
+# convert all but last to numbers
 nums = [[int(x) for x in line] for line in pt1_lines[:-1]]
 nums = [x for x in zip(*nums)]
-operators = [{"+": lambda x, y: x + y,
-              "*": lambda x, y: x * y}[x] for x in pt1_lines[-1]]
+operators = [
+    {"+": lambda x, y: x + y, "*": lambda x, y: x * y}[x] for x in pt1_lines[-1]
+]
 
 total = 0
 for num, operator in zip(nums, operators):
