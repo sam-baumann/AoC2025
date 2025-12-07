@@ -66,7 +66,7 @@ while moved_rolls > 0:
 
 print(total_rolls)
 print(pt2_total_rolls)
-image_multiplier = 5
+image_multiplier = 10
 image_arr = [
     x.resize(
         (x.width * image_multiplier, x.height * image_multiplier),
