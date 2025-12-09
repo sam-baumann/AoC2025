@@ -16,9 +16,9 @@ for row in range(grid.rows()):
                 pt1_total += 1
                 left = grid.addVector((row, col), GridTools.LEFT)
                 right = grid.addVector((row, col), GridTools.RIGHT)
-                if grid.gridAtVector(left):
+                if left is not None and grid.gridAtVector(left) is not None:
                     grid.grid[left[0]][left[1]] = "|"
-                if grid.gridAtVector(right):
+                if right is not None and grid.gridAtVector(right) is not None:
                     grid.grid[right[0]][right[1]] = "|"
             else:
                 grid.grid[row][col] = "|"
