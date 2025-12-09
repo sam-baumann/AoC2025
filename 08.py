@@ -1,9 +1,10 @@
-#disjoint set data structure should help with this problem
+# disjoint set data structure should help with this problem
 class DisjointSet:
     """
     Disjoint Set class based on wikipedia pseudocode implementations https://en.wikipedia.org/wiki/Disjoint-set_data_structure
     """
-    def __init__(self, id:str) -> None:
+
+    def __init__(self, id: str) -> None:
         self.id = id
         self.parent = self
         self.size = 1
@@ -17,10 +18,10 @@ class DisjointSet:
     def union(self, other: "DisjointSet"):
         x = self.find()
         y = other.find()
-        
+
         if x is y:
             return
-        
+
         if x.size < y.size:
             (x, y) = (y, x)
 
@@ -29,4 +30,3 @@ class DisjointSet:
 
     def __repr__(self) -> str:
         return self.id
-
