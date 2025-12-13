@@ -74,3 +74,22 @@ class GridTools:
         if len(first) != len(second):
             return None
         return tuple([x + y for x, y in zip(first, second)])
+
+    def __getitem__(self, index):
+        if type(index) is tuple:
+            if len(index) != 2:
+                raise ValueError("Wrong length of tuple")
+            return self.grid[index[0]][index[1]]
+        elif type(index) is int:
+            return self.grid[index]
+        else:
+            raise ValueError
+
+    def __setitem__(self, index, val):
+        if type(index) is tuple:
+            if len(index) != 2:
+                raise ValueError("Wrong length of tuple")
+            self.grid[index[0]][index[1]] = val
+        else:
+            raise ValueError
+            
