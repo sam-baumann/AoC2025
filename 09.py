@@ -1,5 +1,5 @@
 from GridTools import GridTools
-from functools import cache
+from collections import deque
 
 with open("inputs/09.txt") as f:
     lines = [x.strip() for x in f.readlines()]
@@ -46,7 +46,6 @@ def draw_line(start, end):
         grid[coord] = 'x'
 
 for coord, next in zip(compressed_coords, compressed_coords[1:]):
-    print(grid[coord])
     draw_line(coord, next)
     grid[coord] = '0'
 
@@ -54,45 +53,42 @@ for coord, next in zip(compressed_coords, compressed_coords[1:]):
 draw_line(compressed_coords[-1], compressed_coords[0])
 grid[compressed_coords[-1]] = '0'
 
-#TODO something is wrong here I think
-@cache
-def count_crossings(point, on_line):
-    """
-    Returns the number of 'x'es to the right of the current point. Only valid if initial point is a '.'
-    
-    :param point: Initial point
-    :param on_line: internal tracking to avoid double counting lines
-    """
-    #base case: we are all the way to the right
-    if point[1] >= grid.cols():
-        return 0
+#do a bfs on the grid to determine membership (inside/outside)
+wrong_set = set() #a set that tracks points outside the grid
+visited = set()
+in_grid = set()
+def points_in_grid(point):
+    Q = deque()
+    visited.add(point)
+    Q.append(point)
+    while len(Q):
+        v = Q.popleft()
+        #if v is outside the grid, return false
+        if v in wrong_set or not grid.isInBounds(v[0], v[1]):
+            return False
+        #get the surrounding points
+        surrounding = [grid.addVector(v, direction) for direction in GridTools.DIRECTIONS]
+        for w in surrounding:
+            if w not in visited and w not in in_grid:
+                w_val = grid.gridAtVector(w)
+                if w_val != 'x' and w_val != '0':
+                    visited.add(w)
+                    Q.append(w)
+    return True
 
-    #now, check if we are on line
-    cur = grid[point]
-    right_vector = grid.addVector(point, GridTools.RIGHT)
-    if cur == '0':
-        #start tracking or complete tracking line
-        if on_line is not None:
-            if grid[grid.addVector(point, on_line)] == 'x':
-                #we never exited, as this line curled back in the way it came from
-                return count_crossings(right_vector, None)
-            else:
-                #we have now exited
-                return 1 + count_crossings(right_vector, None)
-        else: 
-            dir = GridTools.UP if grid[grid.addVector(point, GridTools.UP)] == 'x' else GridTools.DOWN
-            return count_crossings(right_vector, dir)
-    elif on_line is None and cur == 'x':
-        return 1 + count_crossings(right_vector, None)
-    return count_crossings(right_vector, on_line)
-
+#test points_in_grid at every point
 for i in range(grid.rows()):
     for j in range(grid.cols()):
-        if grid[i][j] != 'x' and grid[i][j] != '0':
-            crossings = count_crossings((i, j), None)
-            crossings = 'z' if crossings % 2 == 0 else str(crossings)
-            grid[i][j] = crossings
-            print(f'done with point {(i, j)}')
+        if grid[i][j] == '.':
+            if points_in_grid((i, j)):
+                in_grid |= visited
+            else:
+                wrong_set |= visited
+            visited = set()
+
+print(in_grid)
+for point in in_grid:
+    grid[point] = 'x'
 
 #iterate over every possible rect again, but trace the perimiter and check it doesn't cross
 cur_max = 0
@@ -110,7 +106,7 @@ for i, coord1 in enumerate(compressed_coords):
             [(xs[1], y) for y in range(ys[0], ys[1])], #bottom-left - top-left
         ]
 
-        if not any([grid[coord] == 'z' for x in perimeter_coords for coord in x]):
+        if not any([grid[coord] == '.' for x in perimeter_coords for coord in x]):
             coord1_uncompressed = get_original_coord(coord1)
             coord2_uncompressed = get_original_coord(coord2)
             x = abs(coord2_uncompressed[0] - coord1_uncompressed[0]) + 1
