@@ -66,6 +66,8 @@ def points_in_grid(point):
         #if v is outside the grid, return false
         if v in wrong_set or not grid.isInBounds(v[0], v[1]):
             return False
+        if v in in_grid:
+            return True
         #get the surrounding points
         surrounding = [grid.addVector(v, direction) for direction in GridTools.DIRECTIONS]
         for w in surrounding:
