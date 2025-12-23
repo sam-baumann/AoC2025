@@ -92,4 +92,3 @@ class GridTools:
             self.grid[index[0]][index[1]] = val
         else:
             raise ValueError
-            
